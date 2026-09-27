@@ -297,35 +297,36 @@ WHEN NOT MATCHED THEN
 DROP TABLE IF EXISTS dwh.customer_report_datamart;
 
 CREATE TABLE dwh.customer_report_datamart (
-    id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    customer_id BIGINT NOT NULL,
-    customer_name VARCHAR NOT NULL,
-    customer_address VARCHAR NOT NULL,
-    customer_birthday DATE NOT NULL,
-    customer_email VARCHAR NOT NULL,
-    customer_money NUMERIC(15,2) NOT NULL,
-    platform_money NUMERIC(15,2) NOT NULL,
-    count_order BIGINT NOT NULL,
-    avg_price_order NUMERIC(10,2) NOT NULL,
-    median_time_order_completed NUMERIC(10,1),
-    top_product_category VARCHAR NOT NULL,
-    top_craftsman_id BIGINT NOT NULL,
-    count_order_created BIGINT NOT NULL,
-    count_order_in_progress BIGINT NOT NULL,
-    count_order_delivery BIGINT NOT NULL,
-    count_order_done BIGINT NOT NULL,
-    count_order_not_done BIGINT NOT NULL,
-    report_period VARCHAR NOT NULL,
-    CONSTRAINT customer_report_datamart_pk PRIMARY KEY (id)
+    id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL, -- идентификатор записи
+    customer_id BIGINT NOT NULL, -- идентификатор заказчика
+    customer_name VARCHAR NOT NULL, -- Ф.И.О. заказчика
+    customer_address VARCHAR NOT NULL, -- адрес заказчика
+    customer_birthday DATE NOT NULL, -- дата рождения заказчика
+    customer_email VARCHAR NOT NULL, -- электронная почта заказчика
+    customer_money NUMERIC(15,2) NOT NULL, -- сумма, которую потратил заказчик за месяц
+    platform_money NUMERIC(15,2) NOT NULL, -- сумма, которую заработала платформа: 10% от покупок заказчика за месяц
+    count_order BIGINT NOT NULL, -- количество заказов заказчика за месяц
+    avg_price_order NUMERIC(10,2) NOT NULL, -- средняя стоимость одного заказа заказчика за месяц
+    median_time_order_completed NUMERIC(10,1), -- медианное время выполнения заказа в днях за месяц
+    top_product_category VARCHAR NOT NULL, -- самая популярная категория товаров у заказчика за месяц
+    top_craftsman_id BIGINT NOT NULL, -- идентификатор самого популярного мастера у заказчика
+    count_order_created BIGINT NOT NULL, -- количество заказов в статусе created за месяц
+    count_order_in_progress BIGINT NOT NULL, -- количество заказов в статусе in progress за месяц
+    count_order_delivery BIGINT NOT NULL, -- количество заказов в статусе delivery за месяц
+    count_order_done BIGINT NOT NULL, -- количество завершённых заказов за месяц
+    count_order_not_done BIGINT NOT NULL, -- количество незавершённых заказов за месяц
+    report_period VARCHAR NOT NULL, -- отчётный период в формате YYYY-MM
+    CONSTRAINT customer_report_datamart_pk PRIMARY KEY (id) -- первичный ключ витрины
 );
 
 
+/* Таблица с датами загрузок для инкрементального обновления витрины */
 DROP TABLE IF EXISTS dwh.load_dates_customer_report_datamart;
 
 CREATE TABLE dwh.load_dates_customer_report_datamart (
-    id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    load_dttm DATE NOT NULL,
-    CONSTRAINT load_dates_customer_report_datamart_pk PRIMARY KEY (id)
+    id BIGINT GENERATED ALWAYS AS IDENTITY NOT NULL, -- идентификатор записи загрузки
+    load_dttm DATE NOT NULL, -- дата последней обработанной загрузки
+    CONSTRAINT load_dates_customer_report_datamart_pk PRIMARY KEY (id) -- первичный ключ таблицы загрузок
 );
 
 
